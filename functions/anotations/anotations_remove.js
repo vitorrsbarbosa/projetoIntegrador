@@ -1,6 +1,6 @@
 const mongodb = require('../../lib/mongodb')
 const util = require('../../lib/util')
-const collectionUsers = 'users'
+const collectionAnotations = 'anotations'
 const { ObjectId } = require('mongodb')
 
 module.exports = async (event) => {
@@ -10,7 +10,7 @@ module.exports = async (event) => {
 
     await mongodb.connect()
 
-    await mongodb(collectionUsers).removeOne({ _id: ObjectId(body._id) })
+    await mongodb(collectionAnotations).removeOne({ _id: ObjectId(body._id) })
     return util.bind({})
   } catch (error) {
     return util.bind(error)

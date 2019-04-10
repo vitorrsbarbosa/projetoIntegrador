@@ -1,6 +1,6 @@
 const mongodb = require('../../lib/mongodb')
 const util = require('../../lib/util')
-const collectionUsers = 'users'
+const collectionAnotations = 'anotations'
 const { ObjectId } = require('mongodb')
 
 module.exports = async (event) => {
@@ -8,20 +8,27 @@ module.exports = async (event) => {
     const body = JSON.parse(event.body || '{}')
     if (!body._id) return util.bind(new Error('Enter your code!'))
     if (!body.email) return util.bind(new Error('Enter your email!'))
+    if (!body.title) return util.bind(new Error('Enter your title!'))
+    if (!body.user) return util.bind(new Error('Enter your user!'))
+
 
     await mongodb.connect()
 
-    const user = {
-      name: body.name,
-      email: body.email
+    const anotations = {
+      description: body.description,
+      email: body.email,
+      title: body.title,
+      insertDate: body.insertDate,
+      observation: body.observation,
+      user: body.user
     }
 
-    await mongodb(collectionUsers).updateOne(
+    await mongodb(collectionAnotations).updateOne(
       {
         _id: ObjectId(body._id)
       },
       {
-        $set: user
+        $set: anotations
       }
     )
     return util.bind({})
