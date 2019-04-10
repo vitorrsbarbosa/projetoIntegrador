@@ -3,14 +3,14 @@
 require('dotenv').config()
 const path = require('path')
 
-const anotations = require(path.join(__dirname, 'functions', 'anotations'))
+const events = require(path.join(__dirname, 'functions', 'events'))
 
 module.exports = {
-  anotations: (event, context) => {
-    if (event.resource === '/anotations' && event.httpMethod === 'GET') return anotations.get(event, context)
-    if (event.resource === '/anotations' && event.httpMethod === 'POST') return anotations.post(event, context)
-    if (event.resource === '/anotations' && event.httpMethod === 'PUT') return anotations.put(event, context)
-    if (event.resource === '/anotations' && event.httpMethod === 'DELETE') return anotations.remove(event, context)
-    if (event.resource === '/anotations/{id}' && event.httpMethod === 'GET') return anotations.get(event, context)
+  events: (event, context) => {
+    if (event.resource === '/events' && event.httpMethod === 'GET') return events.get(event, context)
+    if (event.resource === '/events' && event.httpMethod === 'POST') return events.post(event, context)
+    if (event.resource === '/events' && event.httpMethod === 'PUT') return events.put(event, context)
+    if (event.resource === '/events' && event.httpMethod === 'DELETE') return events.remove(event, context)
+    if (event.resource === '/events/{id}' && event.httpMethod === 'GET') return events.get(event, context)
   }
 }

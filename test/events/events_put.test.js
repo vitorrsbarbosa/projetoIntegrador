@@ -1,28 +1,28 @@
 require('dotenv').config()
 const mongodb = require('../../lib/mongodb')
 const { ObjectId } = require('mongodb')
-const anotationsPut = require('../../functions/anotations/anotations_put')
+const EventsPut = require('../../functions/Events/Events_put')
 
-const collectionAnotations = 'anotations'
+const collectionEvents = 'Events'
 
-describe('anotations/anotations_put.js', () => {
+describe('Events/Events_put.js', () => {
   beforeAll(async () => {
     try {
       await mongodb.connect()
-      await mongodb(collectionAnotations).insertOne({ email: 'puttest@test.com', _id: ObjectId('5c326feaf8a79d378757bed0'), title: 'test', user: 'test' })
+      await mongodb(collectionEvents).insertOne({ email: 'puttest@test.com', _id: ObjectId('5c326feaf8a79d378757bed0'), title: 'test', user: 'test' })
     } catch (error) {
       console.log('error -> ', error)
     }
   })
   afterAll(async () => {
     try {
-      await mongodb(collectionAnotations).removeOne({ email: 'puttest@test.com' })
+      await mongodb(collectionEvents).removeOne({ email: 'puttest@test.com' })
     } catch (error) {
       console.log('error -> ', error)
     }
   })
   describe('Should success', () => {
-    it('update anotations', async () => {
+    it('update Events', async () => {
       const event = {
         body: JSON.stringify({
           _id: '5c326feaf8a79d378757bed0',
@@ -35,27 +35,27 @@ describe('anotations/anotations_put.js', () => {
           insertDate: 'date'
         })
       }
-      const res = await anotationsPut(event)
+      const res = await EventsPut(event)
       expect(res.statusCode).toBe(200)
     })
-    it('valid code anotations', async () => {
+    it('valid code Events', async () => {
       const event = {}
-      const res = await anotationsPut(event)
+      const res = await EventsPut(event)
       expect(res.statusCode).toBe(400)
     })
-    it('valid email anotations', async () => {
+    it('valid email Events', async () => {
       const event = {
         body: JSON.stringify({
           _id: '5c326feaf8a79d378757bed0'
         })
       }
-      const res = await anotationsPut(event)
+      const res = await EventsPut(event)
       expect(res.statusCode).toBe(400)
     })
   })
   describe('Should fail', () => {
     it('should return an error event not send', async () => {
-      const res = await anotationsPut()
+      const res = await EventsPut()
       expect(res.statusCode).toBe(400)
     })
   })

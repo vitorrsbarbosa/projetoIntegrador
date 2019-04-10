@@ -1,7 +1,7 @@
 const mongodb = require('../../lib/mongodb')
 const util = require('../../lib/util')
 const { ObjectId } = require('mongodb')
-const collectionAnotations = 'anotations'
+const collectionEvents = 'Events'
 
 module.exports = async (event) => {
   try {
@@ -10,12 +10,12 @@ module.exports = async (event) => {
     const page = event.queryStringParameters && event.queryStringParameters.page ? event.queryStringParameters.page : 1
 
     if (event.pathParameters && event.pathParameters.id) {
-      const anotations = await mongodb(collectionAnotations).findOne({ _id: ObjectId(event.pathParameters.id) })
-      return util.bind(anotations)
+      const Events = await mongodb(collectionEvents).findOne({ _id: ObjectId(event.pathParameters.id) })
+      return util.bind(Events)
     }
 
-    const anotations = await mongodb(collectionAnotations).find({}).skip(perPage * page - perPage).limit(perPage).toArray()
-    return util.bind(anotations)
+    const Events = await mongodb(collectionEvents).find({}).skip(perPage * page - perPage).limit(perPage).toArray()
+    return util.bind(Events)
   } catch (error) {
     return util.bind(error)
   }

@@ -1,31 +1,31 @@
 require('dotenv').config()
 const mongodb = require('../../lib/mongodb')
-const anotationsPost = require('../../functions/anotations/anotations_post')
+const EventsPost = require('../../functions/Events/Events_post')
 
-const collectionAnotations = 'anotations'
+const collectionEvents = 'Events'
 
-describe('anotations/anotations_post.js', () => {
+describe('Events/Events_post.js', () => {
   beforeAll(async () => {
     try {
       await mongodb.connect()
-      await mongodb(collectionAnotations).insertOne({ email: 'othertest@test.com', title: 'test', user: 'test'  })
+      await mongodb(collectionEvents).insertOne({ email: 'othertest@test.com', title: 'test', user: 'test'  })
     } catch (error) {
       console.log('error -> ', error)
     }
   })
   afterAll(async () => {
     try {
-      await mongodb(collectionAnotations).removeOne({ email: 'othertest@test.com' })
-      await mongodb(collectionAnotations).removeOne({ email: 'test@test.com' })
+      await mongodb(collectionEvents).removeOne({ email: 'othertest@test.com' })
+      await mongodb(collectionEvents).removeOne({ email: 'test@test.com' })
     } catch (error) {
       console.log('error -> ', error)
     }
   })
   describe('Should success', () => {
-    it('valid anotations', async () => {
+    it('valid Events', async () => {
       const event = {
         body: JSON.stringify({
-          name: 'anotations test name',
+          name: 'Events test name',
           email: 'test@test.com',
           title: 'test',
           observation: 'test',
@@ -35,13 +35,13 @@ describe('anotations/anotations_post.js', () => {
 
         })
       }
-      const res = await anotationsPost(event)
+      const res = await EventsPost(event)
       expect(res.statusCode).toBe(400)
     })
-    it('should add a new anotations', async () => {
+    it('should add a new Events', async () => {
       const event = {
         body: JSON.stringify({
-          name: 'anotations test name',
+          name: 'Events test name',
           email: 'test@test.com',
           title: 'test',
           observation: 'test',
@@ -50,13 +50,13 @@ describe('anotations/anotations_post.js', () => {
           insertDate: 'date'
         })
       }
-      const res = await anotationsPost(event)
+      const res = await EventsPost(event)
       expect(res.statusCode).toBe(200)
     })
     it('should test email', async () => {
       const event = {
         body: JSON.stringify({
-          name: 'anotations othertest',
+          name: 'Events othertest',
           email: 'othertest@test.com',
           title: 'test',
           observation: 'test',
@@ -65,7 +65,7 @@ describe('anotations/anotations_post.js', () => {
           insertDate: 'date'
         })
       }
-      const res = await anotationsPost(event)
+      const res = await EventsPost(event)
       const body = JSON.parse(res.body)
       expect(res.statusCode).toBe(400)
       expect(body).toHaveProperty('errorMessage')
@@ -73,11 +73,11 @@ describe('anotations/anotations_post.js', () => {
   })
   describe('Should fail', () => {
     it('should return an error body not send', async () => {
-      const res = await anotationsPost()
+      const res = await EventsPost()
       expect(res.statusCode).toBe(400)
     })
-    it('should return valid anotations empty', async () => {
-      const res = await anotationsPost({ body: '' })
+    it('should return valid Events empty', async () => {
+      const res = await EventsPost({ body: '' })
       expect(res.statusCode).toBe(400)
     })
   })

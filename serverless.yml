@@ -7,27 +7,27 @@ provider:
     stage: pro
     region: us-east-1
 functions:
-    anotations:
-        handler: handler.anotations
+    events:
+        handler: handler.events
         events:
             - http:
-                path: anotations
+                path: events
                 method: get
                 cors: true
             - http:
-                path: anotations/{id}
+                path: events/{id}
                 method: get
                 cors: true
             - http:
-                path: anotations
+                path: events
                 method: post
                 cors: true
             - http:
-                path: anotations
+                path: events
                 method: put
                 cors: true
             - http:
-                path: anotations
+                path: events
                 method: delete
                 cors: true
   
